@@ -1,5 +1,4 @@
 # Dockerfile
-# Cambiado de node:25 a node:22-alpine para mayor estabilidad y rendimiento
 FROM node:22-alpine
 
 # Crear directorio de la aplicación
@@ -9,8 +8,8 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 COPY index.js .
 
-# Instalar dependencias limpiamente
-RUN npm install --no-audit --no-fund
+# Usar Yarn en lugar de npm para evitar el bug de bloqueo en Windows/WSL2
+RUN yarn install --frozen-lockfile || yarn install
 
 # Exponer el puerto de la aplicación
 EXPOSE 3000
